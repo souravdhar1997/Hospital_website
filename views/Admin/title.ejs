@@ -1,0 +1,224 @@
+<%- include("./partials/head.ejs") %>
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <%- include("./partials/sidebar.ejs") %>
+
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <!-- Main Content -->
+                <div id="content">
+
+                    <%- include("./partials/top-nav.ejs") %>
+
+                        <!-- Begin Page Content -->
+                        <div class="container-fluid">
+
+                            <!-- Page Heading -->
+                            <div class="card shadow mb-4">
+                                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                    <h3 class="mx-4 mt-4 font-weight-bold text-primary">Title</h3>
+                                </div>
+                                <div class="card shadow mb-4">
+                                    <div class="card-body">
+                                        <button class="btn btn-success mb-3" data-toggle="modal"
+                                            data-target="#createTitleModal">Create</button>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="dataTable" width="100%"
+                                                cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Sl. No</th>
+                                                        <th>Title</th>
+                                                        <th>SubTitle</th>
+                                                        <th>Image</th>
+                                                        <th>Edit</th>
+                                                        <th>Delete</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% let slNo=1; %>
+                                                        <% if(titleData.length> 0) { %>
+                                                            <% titleData.forEach(data=> { %>
+                                                                <tr>
+                                                                    <td>
+                                                                        <%= slNo++ %>
+                                                                    </td>
+                                                                    
+                                                                    <td>
+                                                                        <%= data.title %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= data.subtitle %>
+                                                                    </td>
+                                                                    <td><img src="/<%= data.image %>" alt=""
+                                                                            height="50">
+                                                                    </td>
+                                                                    <td>
+                                                                        <button class="btn btn-primary"
+                                                                            data-toggle="modal"
+                                                                            data-target="#editTitleModal<%= data._id %>">Edit</button>
+                                                                    </td>
+                                                                    <td>
+                                                                        <button class="btn btn-danger"
+                                                                            data-toggle="modal"
+                                                                            data-target="#deleteTitleModal<%= data._id %>">Delete</button>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <!-- Edit Title Modal -->
+                                                                <div class="modal fade"
+                                                                    id="editTitleModal<%= data._id %>" tabindex="-1"
+                                                                    role="dialog"
+                                                                    aria-labelledby="editTitleModalLabel<%= data._id %>"
+                                                                    aria-hidden="true">
+                                                                    <div class="modal-dialog" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title"
+                                                                                    id="editTitleModalLabel<%= data._id %>">
+                                                                                    Edit Title</h5>
+                                                                                <button type="button" class="close"
+                                                                                    data-dismiss="modal"
+                                                                                    aria-label="Close">
+                                                                                    <span
+                                                                                        aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <form
+                                                                                    action="/admin/title/update/<%= data._id %>"
+                                                                                    method="POST"
+                                                                                    enctype="multipart/form-data">
+                                                                                    <div class="form-group">
+                                                                                        <label for="title">Title</label>
+                                                                                        <input type="text"
+                                                                                            class="form-control"
+                                                                                            id="title" name="title"
+                                                                                            value="<%= data.title %>">
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <label
+                                                                                            for="subtitle">SubTitle</label>
+                                                                                        <input type="text"
+                                                                                            class="form-control"
+                                                                                            id="subtitle"
+                                                                                            name="subtitle"
+                                                                                            value="<%= data.subtitle %>">
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <label for="image">Image</label>
+                                                                                        <input type="file"
+                                                                                            class="form-control"
+                                                                                            id="image" name="image"
+                                                                                            value="<%= data.image %>">
+                                                                                    </div>
+                                                                                    <button type="submit"
+                                                                                        class="btn btn-primary">Save
+                                                                                        changes</button>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- Delete Title Modal -->
+                                                                <div class="modal fade"
+                                                                    id="deleteTitleModal<%= data._id %>" tabindex="-1"
+                                                                    role="dialog"
+                                                                    aria-labelledby="deleteTitleModalLabel<%= data._id %>"
+                                                                    aria-hidden="true">
+                                                                    <div class="modal-dialog" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title"
+                                                                                    id="deleteTitleModalLabel<%= data._id %>">
+                                                                                    Delete Title</h5>
+                                                                                <button type="button" class="close"
+                                                                                    data-dismiss="modal"
+                                                                                    aria-label="Close">
+                                                                                    <span
+                                                                                        aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <p>Are you sure you want to delete this
+                                                                                    title?</p>
+                                                                                <form
+                                                                                    action="/admin/title/delete/<%= data._id %>"
+                                                                                    method="POST">
+                                                                                    <button type="submit"
+                                                                                        class="btn btn-danger">Delete</button>
+                                                                                    <button type="button"
+                                                                                        class="btn btn-secondary"
+                                                                                        data-dismiss="modal">Cancel</button>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <% })} else { %>
+                                                                    <tr>
+                                                                        <td colspan="6">No Data Found</td>
+                                                                    </tr>
+                                                                    <% } %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- End Begin Page Content -->
+                </div>
+                <!-- End of Main Content -->
+
+                <%- include("./partials/footer.ejs") %>
+
+            </div>
+            <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Create Title Modal -->
+    <div class="modal fade" id="createTitleModal" tabindex="-1" role="dialog" aria-labelledby="createTitleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createTitleModalLabel">Create Title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/admin/title/create" method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subtitle">SubTitle</label>
+                            <input type="text" class="form-control" id="subtitle" name="subtitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="image">Image</label>
+                            <input type="file" class="form-control" id="image" name="image" required>
+                        </div>
+                        <button type="submit" class="btn btn-success">Create</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DataTable -->
+    <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable();
+        });
+    </script>

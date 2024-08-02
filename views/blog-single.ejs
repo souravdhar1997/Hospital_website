@@ -1,0 +1,182 @@
+<!-- blog-single.ejs -->
+
+<!-- head -->
+<%- include('./common/head.ejs') %>
+
+<!-- navbar -->
+<%- include('./common/navbar.ejs') %>
+
+<section class="page-title" style="background: url('/<%= titleData[7].image %>') no-repeat 50% 50%; background-size: cover; position: relative;">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="block text-center">
+            <span class="text-white"><%= titleData[7].subtitle %></span>
+            <h1 class="text-capitalize mb-5 text-lg"><%= titleData[7].title %></h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="section blog-wrap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="row">
+                    <div class="col-lg-12 mb-5">
+                        <div class="single-blog-item">
+                            <img src="/<%= blogDetails.image %>" alt="" class="img-fluid">
+                            <div class="blog-item-content mt-5">
+                                <div class="blog-item-meta mb-3">
+                                    <span class="text-color-2 text-capitalize mr-3">
+                                        <i class="icofont-book-mark mr-2"></i>
+                                        <%= blogDetails.category.name %>
+                                    </span>
+                                    <span class="text-muted text-capitalize mr-3">
+                                        <i class="icofont-comment mr-2"></i>
+                                        <%= blogDetails.comment.length %> Comments
+                                    </span>
+                                    <span class="text-black text-capitalize mr-3">
+                                        <i class="icofont-calendar mr-2"></i>
+                                        <%= blogDetails.date.toDateString() %>
+                                    </span>
+                                </div>
+                                <h2 class="mb-4 text-md">
+                                    <a href="/blog-single/<%= blogDetails._id %>">
+                                        <%= blogDetails.title %>
+                                    </a>
+                                </h2>
+                                <p class="lead mb-4"><%= blogDetails.excerpt %></p>
+                                <p><%= blogDetails.content %></p>
+                                <blockquote class="quote">
+                                    A brand for a company is like a reputation for a person. You earn reputation by trying to do hard things well.
+                                </blockquote>
+                                <div class="mt-5 clearfix">
+                                    <ul class="float-right list-inline">
+                                        <li class="list-inline-item"> Share: </li>
+                                        <li class="list-inline-item"><a href="#!"><i class="icofont-facebook"></i></a></li>
+                                        <li class="list-inline-item"><a href="#!"><i class="icofont-twitter"></i></a></li>
+                                        <li class="list-inline-item"><a href="#!"><i class="icofont-pinterest"></i></a></li>
+                                        <li class="list-inline-item"><a href="#!"><i class="icofont-linkedin"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="comment-area mt-4 mb-5">
+                            <h4 class="mb-4"><%= blogDetails.comment.length %> Comments</h4>
+                            <ul class="comment-tree list-unstyled">
+                                <% blogDetails.comment.forEach(comment => { %>
+                                <li class="mb-5">
+                                    <div class="comment-area-box d-block d-sm-flex">
+                                        <div class="comment-thumb">
+                                            <img alt="" src="/assets/img/user.jpg" style="width: 70px">
+                                        </div>
+                                        <div class="block">
+                                            <div class="comment-info">
+                                                <h5 class="mb-1"><%= comment.name %></h5>
+                                                <span><%= comment.email %></span>
+                                                <span class="date-comm">| <%= comment.date.toDateString() %></span>
+                                            </div>
+                                         
+                                            <div class="comment-content mt-3">
+                                                <p><%= comment.content %></p>
+                                            </div>
+                                            <!-- Display Replies -->
+                                            <% if (comment.replies && comment.replies.length > 0) { %>
+                                            <ul class="list-unstyled pl-4">
+                                                <% comment.replies.forEach(reply => { %>
+                                                <li class="mb-3">
+                                                    <div class="comment-area-box d-block d-sm-flex">
+                                                        <div class="comment-thumb">
+                                                            <img alt="" src="/assets/img/undraw_profile.svg" style="width: 50px">
+                                                        </div>
+                                                        <div class="block">
+                                                            <div class="comment-info">
+                                                                <h6 class="mb-1">Admin</h6>
+                                                                <span class="date-comm">| <%= reply.date.toDateString() %></span>
+                                                            </div>
+                                                            <div class="comment-content mt-3">
+                                                                <p><%= reply.content %></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <% }) %>
+                                            </ul>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </li>
+                                <% }) %>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <form class="comment-form my-5" id="comment-form" action="/blog-single/<%= blogDetails._id %>/comment" method="post">
+                            <h4 class="mb-4">Write a comment</h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input class="form-control" type="text" name="name" id="name" placeholder="Name:" value="<%= user ? user.name : '' %>" <%= user ? 'readonly' : '' %>>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input class="form-control" type="email" name="email" id="email" placeholder="Email:" value="<%= user ? user.email : '' %>" <%= user ? 'readonly' : '' %>>
+                                    </div>
+                                </div>
+                            </div>
+                            <textarea class="form-control mb-4" name="content" id="content" cols="30" rows="5" placeholder="Comment"></textarea>
+                            <input class="btn btn-main-2 btn-round-full" type="submit" name="submit-contact" id="submit_contact" value="Submit Message">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="sidebar-wrap pl-lg-4 mt-5 mt-lg-0">
+                    
+                    <!-- Search Widget -->
+                    <div class="sidebar-widget search mb-3">
+                        <h5>Search Here</h5>
+                        <form action="/blog-sidebar" method="GET" class="search-form">
+                            <input type="text" name="search" class="form-control" placeholder="search" value="<%= searchQuery || '' %>">
+                            <button type="submit" class="btn btn-search"><i class="ti-search"></i></button>
+                        </form>
+                    </div>
+
+                    <!-- Popular Posts Widget -->
+                    <div class="sidebar-widget latest-post mb-3">
+                        <h5>Popular Posts</h5>
+                        <% popularPosts.forEach(post => { %>
+                        <div class="py-2">
+                            <span class="text-sm text-muted"><%= post.date.toDateString() %></span>
+                            <h6 class="my-2"><a href="/blog-single/<%= post._id %>"><%= post.title %></a></h6>
+                        </div>
+                        <% }) %>
+                    </div>
+
+                    <!-- Categories Widget -->
+                    <div class="sidebar-widget category mb-3">
+                        <h5 class="mb-4">Categories</h5>
+                        <ul class="list-unstyled">
+                            <% categories.forEach(category => { %>
+                            <li class="align-items-center">
+                                <a href="/blog-sidebar?category=<%= category._id %>&search=<%= searchQuery %>"><%= category.name %></a>
+                                <span>(<%= category.postCount %>)</span>
+                            </li>
+                            <% }) %>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- footer -->
+<%- include('./common/footer.ejs') %>

@@ -1,0 +1,127 @@
+<!-- head -->
+<%- include('./common/head.ejs')%>
+
+<!-- navbar -->
+<%- include('./common/navbar.ejs')%>
+
+
+<section class="page-title" style="background: url('/<%= titleData[5].image %>') no-repeat 50% 50%; background-size: cover; position: relative;">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="block text-center">
+          <span class="text-white"><%= titleData[5].subtitle %></span>
+          <h1 class="text-capitalize mb-5 text-lg"><%= doctor.name %></h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+  
+  
+  <section class="section doctor-single">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-4 col-md-6">
+                  <div class="doctor-img-block">
+                      <img src="/<%= doctor.image%>" alt="" class="img-fluid w-100">
+  
+                      <div class="info-block mt-4">
+                          <h4 class="mb-0"><%= doctor.name%></h4>
+                          <p><%= doctor.department.department%></p>
+  
+                          <ul class="list-inline mt-4 doctor-social-links">
+                              <li class="list-inline-item"><a href="#!"><i class="icofont-facebook"></i></a></li>
+                              <li class="list-inline-item"><a href="#!"><i class="icofont-twitter"></i></a></li>
+                              <li class="list-inline-item"><a href="#!"><i class="icofont-skype"></i></a></li>
+                              <li class="list-inline-item"><a href="#!"><i class="icofont-linkedin"></i></a></li>
+                              <li class="list-inline-item"><a href="#!"><i class="icofont-pinterest"></i></a></li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+  
+              <div class="col-lg-8 col-md-6">
+                <div class="doctor-details mt-4 mt-lg-0">
+                  <h2 class="text-md">Introducing to myself</h2>
+                  <div class="divider my-4"></div>
+                  <p><%= doctor.description %></p>
+                  <a href="/appointment" class="btn btn-main-2 btn-round-full mt-3">Make an Appoinment<i class="icofont-simple-right ml-2"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <section class="section doctor-qualification gray-bg">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="section-title">
+                  <h3>My Educational Qualifications</h3>
+                  <div class="divider my-4"></div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <% doctor.qualifications.forEach(qualification => { %>
+              <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="edu-block mb-5">
+                  <span class="h6 text-muted">Year(<%= qualification.year %>)</span>
+                  <h4 class="mb-3 title-color"><%= qualification.title %></h4>
+                  <p><%= qualification.description %></p>
+                </div>
+              </div>
+              <% }) %>
+            </div>
+          </div>
+        </section>
+        
+        <section class="section doctor-skills">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-4">
+                <h3>My skills</h3>
+                <div class="divider my-4"></div>
+                <p><%= doctor.skills.description %></p>
+              </div>
+              <div class="col-lg-4">
+                <div class="skill-list">
+                  <h5 class="mb-4">Expertise area</h5>
+                  <ul class="list-unstyled department-service">
+                    <% doctor.skills.expertise.forEach(skill => { %>
+                    <li><i class="icofont-check mr-2"></i><%= skill %></li>
+                    <% }) %>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="sidebar-widget gray-bg p-4">
+                  <h5 class="mb-4">Make Appoinment</h5>
+                  <ul class="list-unstyled lh-35">
+                    <li class="d-flex justify-content-between align-items-center">
+                      <span>Monday - Friday</span>
+                      <span><%= doctor.appointment.mondayToFriday %></span>
+                    </li>
+                    <li class="d-flex justify-content-between align-items-center">
+                      <span>Saturday</span>
+                      <span><%= doctor.appointment.saturday %></span>
+                    </li>
+                    <li class="d-flex justify-content-between align-items-center">
+                      <span>Sunday</span>
+                      <span><%= doctor.appointment.sunday %></span>
+                    </li>
+                  </ul>
+                  <div class="sidebar-contatct-info mt-4">
+                    <p class="mb-0">Need Urgent Help?</p>
+                    <h3 class="text-color-2"><%= doctor.appointment.contactNumber %></h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+  <!-- footer -->
+  <%- include('./common/footer.ejs')%>

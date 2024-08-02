@@ -1,0 +1,14 @@
+<!-- head -->
+<%- include('./common/head.ejs')%>
+
+    <!-- navbar -->
+    <%- include('./common/navbar.ejs')%>
+
+        <!-- content -->
+        <div class="container">
+            <h1> Welcome <%= user.name %></h1>
+            <a class="btn btn-round-full" style="font-style: oblique;" href="/appointment_details">Click to view Your Appointments</a>
+        </div>
+       
+        <!-- footer -->
+        <%- include('./common/footer.ejs')%>

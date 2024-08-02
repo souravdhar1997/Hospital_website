@@ -1,0 +1,177 @@
+<%- include("./partials/head.ejs") %>
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <%- include("./partials/sidebar.ejs") %>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <%- include("./partials/top-nav.ejs") %>
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="card shadow mb-4">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Blog Comments</h1>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Sl. No</th>
+                                        <th>Blog</th>
+                                        <th>User's Name</th>
+                                        <th>Email</th>
+                                        <th>Comment</th>
+                                        <th>Date</th>
+                                        <th>Reply</th>
+                                        <th>Delete comment</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% let slNo = 1; %>
+                                    <% if(comments.length > 0) { %>
+                                    <% comments.forEach(comment => { %>
+                                    <tr>
+                                        <td><%= slNo++ %></td>
+                                        <td><%= comment.blog ? comment.blog.title : 'N/A' %></td>
+                                        <td><%= comment.name %></td>
+                                        <td><%= comment.email %></td>
+                                        <td>
+                                            <p><%= comment.content %></p>
+                                            <!-- Display Replies -->
+                                            <% if(comment.replies && comment.replies.length > 0) { %>
+                                                <div class="ml-3">
+                                                    <strong>Replies:</strong>
+                                                    <% comment.replies.forEach(reply => { %>
+                                                        <div class="mt-2">
+                                                            <p><strong>Admin:</strong> <%= reply.content %></p>
+                                                            <p><small><%= new Date(reply.date).toLocaleString() %></small></p>
+                                                            <button class="btn btn-danger btn-sm" data-toggle="modal"
+                                                                data-target="#deleteReplyModal<%= reply._id %>">Delete</button>
+                                                        </div>
+
+                                                        <!-- Delete Reply Modal -->
+                                                        <div class="modal fade" id="deleteReplyModal<%= reply._id %>" tabindex="-1" role="dialog"
+                                                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLabel">Delete Reply</h5>
+                                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">×</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        Are you sure you want to delete this reply?
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                                                        <form action="/admin/comments/<%= comment._id %>/replies/<%= reply._id %>?_method=DELETE" method="POST">
+                                                                            <button class="btn btn-danger" type="submit">Delete</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    <% }) %>
+                                                </div>
+                                            <% } %>
+                                        </td>
+                                        <td><%= new Date(comment.date).toLocaleString() %></td>
+                                        <td>
+                                            <button class="btn btn-primary" data-toggle="modal"
+                                                data-target="#replyCommentModal<%= comment._id %>">Reply</button>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-danger" data-toggle="modal"
+                                                data-target="#deleteCommentModal<%= comment._id %>">Delete</button>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Reply Comment Modal -->
+                                    <div class="modal fade" id="replyCommentModal<%= comment._id %>" tabindex="-1" role="dialog"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Reply to Comment</h5>
+                                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">×</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="/admin/comment/<%= comment._id %>/reply" method="POST">
+                                                        <div class="form-group">
+                                                            <label for="replyContent">Reply</label>
+                                                            <textarea class="form-control" id="replyContent" name="replyContent" rows="3" required></textarea>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                                            <button class="btn btn-primary" type="submit">Submit</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Delete Comment Modal -->
+                                    <div class="modal fade" id="deleteCommentModal<%= comment._id %>" tabindex="-1" role="dialog"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Delete Comment</h5>
+                                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">×</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to delete this comment?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                                    <form action="/admin/delete/comment/<%= comment._id %>?_method=DELETE" method="POST">
+                                                        <button class="btn btn-danger" type="submit">Delete</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <% })} else { %>
+                                    <tr>
+                                        <td colspan="7">No Data Found</td>
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Begin Page Content -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <%- include("./partials/footer.ejs") %>
+    </div>
+</div>
+
+<!-- DataTable -->
+<script>
+    $(document).ready(function() {
+        $('#dataTable').DataTable();
+    });
+</script>

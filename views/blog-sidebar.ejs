@@ -1,0 +1,120 @@
+<!-- blog-sidebar.ejs -->
+
+<!-- Include common elements -->
+<%- include('./common/head.ejs') %>
+<%- include('./common/navbar.ejs') %>
+
+<section class="page-title" style="background: url('<%= titleData[6].image %>') no-repeat 50% 50%; background-size: cover; position: relative;">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="block text-center">
+          <span class="text-white"><%= titleData[6].subtitle %></span>
+          <h1 class="text-capitalize mb-5 text-lg"><%= titleData[6].title %></h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section blog-wrap">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="row">
+          <% blogs.forEach(blog => { %>
+            <% if(blog.status) { %>
+            <div class="col-lg-12 col-md-12 mb-5">
+              <div class="blog-item">
+                <div class="blog-thumb">
+                  <img src="<%= blog.image %>" alt="" class="img-fluid">
+                </div>
+  
+                <div class="blog-item-content"> 
+                  <div class="blog-item-meta mb-3 mt-4">
+                    <span class="text-muted text-capitalize mr-3"><i class="icofont-comment mr-2"></i><%= blog.comment.length %> Comments</span>
+                    <span class="text-black text-capitalize mr-3"><i class="icofont-calendar mr-1"></i><%= blog.date.toDateString() %></span>
+                  </div> 
+  
+                  <h2 class="mt-3 mb-3"><a href="/blog-single/<%= blog._id %>"><%= blog.title %></a></h2>
+  
+                  <p class="mb-4"><%= blog.excerpt %></p>
+  
+                  <a href="/blog-single/<%= blog._id %>" class="btn btn-main btn-icon btn-round-full">Read More <i class="icofont-simple-right ml-2"></i></a>
+                </div>
+              </div>
+            </div>
+          <% }}) %>
+  
+          <div class="col-lg-12 col-md-12">
+            <nav class="pagination py-2 d-inline-block">
+                <div class="nav-links">
+                    <% if (currentPage > 1) { %>
+                        <a class="page-numbers" href="/blog-sidebar?page=<%= currentPage - 1 %>&search=<%= searchQuery %>&category=<%= selectedCategory %>"><i class="icofont-thin-double-left"></i></a>
+                    <% } %>
+                    
+                    <% for (let i = 1; i <= totalPages; i++) { %>
+                        <% if (i === currentPage) { %>
+                            <span aria-current="page" class="page-numbers current"><%= i %></span>
+                        <% } else { %>
+                            <a class="page-numbers" href="/blog-sidebar?page=<%= i %>&search=<%= searchQuery %>&category=<%= selectedCategory %>"><%= i %></a>
+                        <% } %>
+                    <% } %>
+                    
+                    <% if (currentPage < totalPages) { %>
+                        <a class="page-numbers" href="/blog-sidebar?page=<%= currentPage + 1 %>&search=<%= searchQuery %>&category=<%= selectedCategory %>"><i class="icofont-thin-double-right"></i></a>
+                    <% } %>
+                </div>
+            </nav>
+        </div>
+        
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="col-lg-4">
+        <div class="sidebar-wrap pl-lg-4 mt-5 mt-lg-0">
+          
+          <!-- Search Widget -->
+          <div class="sidebar-widget search mb-3">
+            <h5>Search Here</h5>
+            <form action="/blog-sidebar" method="GET" class="search-form">
+              <input type="text" name="search" class="form-control" placeholder="search" value="<%= searchQuery || '' %>">
+              <button type="submit" class="btn btn-search"><i class="ti-search"></i></button>
+            </form>
+          </div>
+  
+          <!-- Popular Posts Widget -->
+          <div class="sidebar-widget latest-post mb-3">
+            <h5>Popular Posts</h5>
+            <% popularPosts.forEach(post => { %>
+            <div class="py-2">
+              <span class="text-sm text-muted"><%= post.date.toDateString() %></span>
+              <h6 class="my-2"><a href="/blog-single/<%= post._id %>"><%= post.title %></a></h6>
+            </div>
+            <% }) %>
+          </div>
+  
+          <!-- Categories Widget -->
+          <div class="sidebar-widget category mb-3">
+            <h5 class="mb-4">Categories</h5>
+            <ul class="list-unstyled">
+              <% categories.forEach(category => { %>
+                <li class="align-items-center">
+                  <a href="/blog-sidebar?category=<%= category._id %>&search=<%= searchQuery %>"><%= category.name %></a>
+                  <span>(<%= category.postCount %>)</span>
+                </li>
+              <% }) %>
+            </ul>
+          </div>
+          
+        </div>
+      </div>
+      <!-- End Sidebar -->
+    </div>
+  </div>
+</section>
+
+<!-- Include footer -->
+<%- include('./common/footer.ejs') %>

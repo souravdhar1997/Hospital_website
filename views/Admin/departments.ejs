@@ -1,0 +1,249 @@
+<%- include("./partials/head.ejs") %>
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <%- include("./partials/sidebar.ejs") %>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <%- include("./partials/top-nav.ejs") %>
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Departments at our Hospital</h6>
+                    </div>
+
+                    <div class="card-body">
+                        <button class="btn btn-success mb-3" data-toggle="modal" data-target="#createDepartmentModal">Create</button>
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Sl. No</th>
+                                        <th>Department</th>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Image</th>
+                                        <th>Details</th>
+                                        <th>Timings (Mon-Fri)</th>
+                                        <th>Timings (Sat)</th>
+                                        <th>Timings (Sun)</th>
+                                        <th>Contact Number</th>
+                                        <th>Services</th>
+                                        <th>Action1</th>
+                                        <th>Action2</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% let slNo = 1; %>
+                                    <% if(departments.length > 0) { %>
+                                    <% departments.forEach(department => { %>
+                                    <tr>
+                                        <td><%= slNo++ %></td>
+                                        <td><%= department.department %></td>
+                                        <td><%= department.title %></td>
+                                        <td><%= department.description %></td>
+                                        <td><img src="/<%= department.image %>" alt="" height="70"></td>
+                                        <td><%= department.details %></td>
+                                        <td><%= department.timings.mondayToFriday %></td>
+                                        <td><%= department.timings.saturday %></td>
+                                        <td><%= department.timings.sunday %></td>
+                                        <td><%= department.timings.contactNumber %></td>
+                                        <td><%= department.services.features.join(", ") %></td>
+                                        <td>
+                                            <button class="btn btn-primary" data-toggle="modal"
+                                                data-target="#editDepartmentModal<%= department._id %>">Edit</button>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-danger" data-toggle="modal"
+                                                data-target="#deleteDepartmentModal<%= department._id %>">Delete</button>
+                                        </td>
+                                    </tr>
+                                    <% })} else { %>
+                                    <tr>
+                                        <td colspan="13">No Data Found</td>
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            <!-- End Begin Page Content -->
+        </div>
+        <!-- End of Main Content -->
+
+        <%- include("./partials/footer.ejs") %>
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Create Department Modal -->
+<div class="modal fade" id="createDepartmentModal" tabindex="-1" role="dialog" aria-labelledby="createDepartmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="/admin/department/create" method="POST" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createDepartmentModalLabel">Create Department</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <input type="text" class="form-control" id="department" name="department" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Image</label>
+                        <input type="file" class="form-control-file" id="image" name="image" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="details">Details</label>
+                        <textarea class="form-control" id="details" name="details" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="mondayToFriday">Timings (Mon-Fri)</label>
+                        <input type="text" class="form-control" id="mondayToFriday" name="mondayToFriday" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="saturday">Timings (Sat)</label>
+                        <input type="text" class="form-control" id="saturday" name="saturday" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sunday">Timings (Sun)</label>
+                        <input type="text" class="form-control" id="sunday" name="sunday" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactNumber">Contact Number</label>
+                        <input type="text" class="form-control" id="contactNumber" name="contactNumber" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="features">Services</label>
+                        <input type="text" class="form-control" id="features" name="features" placeholder="Comma-separated values" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Department Modals -->
+<% departments.forEach(department => { %>
+<div class="modal fade" id="editDepartmentModal<%= department._id %>" tabindex="-1" role="dialog" aria-labelledby="editDepartmentModalLabel<%= department._id %>" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="/admin/department/edit/<%= department._id %>" method="POST" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editDepartmentModalLabel<%= department._id %>">Edit Department</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="department<%= department._id %>">Department</label>
+                        <input type="text" class="form-control" id="department<%= department._id %>" name="department" value="<%= department.department %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="title<%= department._id %>">Title</label>
+                        <input type="text" class="form-control" id="title<%= department._id %>" name="title" value="<%= department.title %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description<%= department._id %>">Description</label>
+                        <textarea class="form-control" id="description<%= department._id %>" name="description" rows="3" required><%= department.description %></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="image<%= department._id %>">Image</label>
+                        <input type="file" class="form-control-file" id="image<%= department._id %>" name="image">
+                    </div>
+                    <div class="form-group">
+                        <label for="details<%= department._id %>">Details</label>
+                        <textarea class="form-control" id="details<%= department._id %>" name="details" rows="3" required><%= department.details %></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="mondayToFriday<%= department._id %>">Timings (Mon-Fri)</label>
+                        <input type="text" class="form-control" id="mondayToFriday<%= department._id %>" name="mondayToFriday" value="<%= department.timings.mondayToFriday %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="saturday<%= department._id %>">Timings (Sat)</label>
+                        <input type="text" class="form-control" id="saturday<%= department._id %>" name="saturday" value="<%= department.timings.saturday %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sunday<%= department._id %>">Timings (Sun)</label>
+                        <input type="text" class="form-control" id="sunday<%= department._id %>" name="sunday" value="<%= department.timings.sunday %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactNumber<%= department._id %>">Contact Number</label>
+                        <input type="text" class="form-control" id="contactNumber<%= department._id %>" name="contactNumber" value="<%= department.timings.contactNumber %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="features<%= department._id %>">Services</label>
+                        <input type="text" class="form-control" id="features<%= department._id %>" name="features" value="<%= department.services.features.join(", ") %>" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<% }) %>
+
+<!-- Delete Department Modals -->
+<% departments.forEach(department => { %>
+<div class="modal fade" id="deleteDepartmentModal<%= department._id %>" tabindex="-1" role="dialog" aria-labelledby="deleteDepartmentModalLabel<%= department._id %>" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="/admin/department/delete/<%= department._id %>" method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteDepartmentModalLabel<%= department._id %>">Delete Department</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete the department "<%= department.department %>"?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<% }) %>
+
+<!-- DataTable -->
+<script>
+    $(document).ready(function() {
+        $('#dataTable').DataTable();
+    });
+</script>

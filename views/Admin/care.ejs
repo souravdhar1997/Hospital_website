@@ -1,0 +1,235 @@
+<%- include("./partials/head.ejs") %>
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <%- include("./partials/sidebar.ejs") %>
+
+
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <!-- Main Content -->
+                <div id="content">
+
+                    <%- include("./partials/top-nav.ejs") %>
+
+                        <!-- Begin Page Content -->
+                        <div class="container-fluid">
+
+                            <!-- Page Heading -->
+                             
+                           <!-- services -->
+                           <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Care</h6>
+                            </div>
+
+                            <div class="card shadow mb-4">
+                                <div class="card-body">
+                                    <td>
+                                        <button class="btn btn-success" data-toggle="modal"
+                                            data-target="#createServiceModal">Create</button>
+                                    </td>
+                                    <div class="table-responsive mt-3">
+                                        <table class="table table-bordered" id="myTable" width="100%"
+                                            cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Sl. No</th>
+                                                    <th>Service</th>
+                                                    <th>Logo</th>
+                                                    <th>Description</th>
+                                                    <th>Update</th>
+                                                    <th>Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% let sl=1 %>
+                                                    <% cares.forEach(care=> { %>
+                                                        <tr>
+                                                            <td>
+                                                                <%= sl++ %>
+                                                            </td>
+                                                            <td>
+                                                                <%= care.care %>
+                                                            </td>
+                                                            <td>
+                                                                <%= care.logo %>
+                                                            </td>
+                                                            <td>
+                                                                <%= care.words %>
+                                                            </td>
+                                                            <td>
+                                                                <button class="btn btn-primary" data-toggle="modal"
+                                                                    data-target="#editServiceModal<%= care.id %>">Edit</button>
+                                                            </td>
+                                                            <td>
+                                                                <button class="btn btn-danger" data-toggle="modal"
+                                                                    data-target="#deleteServiceModal<%= care.id %>">Delete</button>
+                                                            </td>
+                                                        </tr>
+
+                                                        <!-- Create Service Modal -->
+                                                        <div class="modal fade" id="createServiceModal"
+                                                            tabindex="-1" role="dialog"
+                                                            aria-labelledby="createServiceModalLabel"
+                                                            aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title"
+                                                                            id="createServiceModalLabel">Create
+                                                                            Service</h5>
+                                                                        <button type="button" class="close"
+                                                                            data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <form action="/admin/create-service"
+                                                                            method="POST">
+                                                                            <div class="form-group">
+                                                                                <label
+                                                                                    for="serviceName">Service</label>
+                                                                                <input type="text"
+                                                                                    class="form-control"
+                                                                                    id="serviceName" name="care"
+                                                                                    required>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label
+                                                                                    for="serviceLogo">Logo</label>
+                                                                                <input type="text"
+                                                                                    class="form-control"
+                                                                                    id="serviceLogo" name="logo"
+                                                                                    required>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label
+                                                                                    for="serviceDescription">Description</label>
+                                                                                <textarea class="form-control"
+                                                                                    id="serviceDescription"
+                                                                                    name="words" rows="3"
+                                                                                    required></textarea>
+                                                                            </div>
+                                                                            <button type="submit"
+                                                                                class="btn btn-primary">Create</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Edit Service Modal -->
+                                                        <div class="modal fade" id="editServiceModal<%= care.id %>"
+                                                            tabindex="-1" role="dialog"
+                                                            aria-labelledby="editServiceModalLabel<%= care.id %>"
+                                                            aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title"
+                                                                            id="editServiceModalLabel<%= care.id %>">
+                                                                            Edit Service</h5>
+                                                                        <button type="button" class="close"
+                                                                            data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <form
+                                                                            action="/admin/update-service/<%= care.id %>"
+                                                                            method="POST">
+                                                                            <div class="form-group">
+                                                                                <label
+                                                                                    for="serviceName<%= care.id %>">Service</label>
+                                                                                <input type="text"
+                                                                                    class="form-control"
+                                                                                    id="serviceName<%= care.id %>"
+                                                                                    name="care"
+                                                                                    value="<%= care.care %>"
+                                                                                    required>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label
+                                                                                    for="serviceLogo<%= care.id %>">Logo</label>
+                                                                                <input type="text"
+                                                                                    class="form-control"
+                                                                                    id="serviceLogo<%= care.id %>"
+                                                                                    name="logo"
+                                                                                    value="<%= care.logo %>"
+                                                                                    required>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label
+                                                                                    for="serviceDescription<%= care.id %>">Description</label>
+                                                                                <textarea class="form-control"
+                                                                                    id="serviceDescription<%= care.id %>"
+                                                                                    name="words" rows="3"
+                                                                                    required><%= care.words %></textarea>
+                                                                            </div>
+                                                                            <button type="submit"
+                                                                                class="btn btn-primary">Save
+                                                                                changes</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Delete Service Modal -->
+                                                        <div class="modal fade"
+                                                            id="deleteServiceModal<%= care.id %>" tabindex="-1"
+                                                            role="dialog"
+                                                            aria-labelledby="deleteServiceModalLabel<%= care.id %>"
+                                                            aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title"
+                                                                            id="deleteServiceModalLabel<%= care.id %>">
+                                                                            Delete Service</h5>
+                                                                        <button type="button" class="close"
+                                                                            data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <p>Are you sure you want to delete this
+                                                                            service?</p>
+                                                                        <form
+                                                                            action="/admin/delete-service/<%= care.id %>"
+                                                                            method="POST">
+                                                                            <button type="submit"
+                                                                                class="btn btn-danger">Delete</button>
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary"
+                                                                                data-dismiss="modal">Cancel</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <% }) %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        </div>
+                        <!-- End Begin Page Content -->
+                </div>
+                <!-- End of Main Content -->
+
+                <%- include("./partials/footer.ejs") %>
+
+                <!-- DataTable -->
+                <script>
+                    $(document).ready(function() {
+                        $('#myTable').DataTable();
+                    });
+                </script>

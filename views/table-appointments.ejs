@@ -1,0 +1,56 @@
+    <!-- head -->
+    <%- include('./common/head.ejs') %>
+
+    <!-- navbar -->
+    <%- include('./common/navbar.ejs') %>
+
+    <!-- content -->
+    <div class="container">
+        <div class="row">
+            <!-- User Info Section -->
+            <div class="col-lg-12">
+                <div class="user-info">
+                    <h3>User Information</h3>
+                    <p><strong>User Name:</strong> <%- user.name %></p>
+                    <p><strong>User's Email:</strong> <%- user.email %></p>
+                    <p><strong>User's Phone:</strong> <%- user.phone %></p>
+                </div>
+                
+            </div>
+        </div>
+        <div class="row">
+            <!-- Appointments Table -->
+            <div class="col-lg-12">
+                <table class="table appointments-table" style="margin-top: 20px;">
+                    <thead>
+                        <tr>
+                            <th scope="col">Sl No</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Doctor</th>
+                            <th scope="col">Department</th>
+                            <th scope="col">Patient Name</th>
+                            <th scope="col">Contact No</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% appointments.forEach((appointment, index) => { %>
+                            <tr>
+                                <th scope="row"><%= index + 1 %></th>
+                                <td><%= appointment.date %></td>
+                                <td><%= appointment.time %></td>
+                                <td><%= appointment.doctor.name %></td>
+                                <td><%= appointment.department.department %></td>
+                                <td><%= appointment.name %></td>
+                                <td><%= appointment.phone %></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- footer -->
+    <%- include('./common/footer.ejs') %>
+

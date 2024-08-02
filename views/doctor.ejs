@@ -1,0 +1,97 @@
+<!-- head -->
+<%- include('./common/head.ejs')%>
+
+<!-- custom css -->
+<style>
+  .doctor-img img {
+    width: 100%;
+    height: 150px; 
+    object-fit: cover; 
+    border-radius: 50%;
+  }
+
+</style>
+
+<!-- navbar -->
+<%- include('./common/navbar.ejs')%>
+
+<section class="page-title" style="background: url('<%= titleData[4].image %>') no-repeat 50% 50%; background-size: cover; position: relative;">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="block text-center">
+            <span class="text-white"><%= titleData[4].subtitle %></span>
+            <h1 class="text-capitalize mb-5 text-lg"><%= titleData[4].title %></h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- portfolio -->
+<section class="section doctors">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <div class="section-title">
+                    <h2>Doctors</h2>
+                    <div class="divider mx-auto my-4"></div>
+                    <p>We provide a wide range of creative services adipisicing elit. Autem maxime rem modi eaque, voluptate. Beatae officiis neque </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 text-center mb-5">
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn active">
+                    <input type="radio" name="shuffle-filter" value="all" checked="checked" />All Departments
+                </label>
+                <% departments.forEach(function(department) { %>
+                    <label class="btn">
+                        <input type="radio" name="shuffle-filter" value="<%= department._id %>" /><%= department.department %>
+                    </label>
+                <% }); %>
+            </div>
+        </div>
+
+        <div class="row shuffle-wrapper portfolio-gallery">
+            <% doctors.forEach(function(doctor) { %>
+                <div class="col-lg-3 col-sm-6 col-md-6 mb-4 shuffle-item" data-groups='["<%= doctor.department._id %>"]'>
+                    <div class="position-relative doctor-inner-box">
+                        <div class="doctor-profile">
+                            <div class="doctor-img">
+                                <img src="<%= doctor.image %>" alt="doctor-image" class="img-fluid w-50">
+                            </div>
+                        </div>
+                        <div class="content mt-3">
+                            <h4 class="mb-0"><a href="/doctor-single/<%= doctor._id %>"><%= doctor.name %></a></h4>
+                            <p><%= doctor.department.department %></p>
+                        </div> 
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+</section>
+
+<!-- /portfolio -->
+<section class="section cta-page">
+    <% cta.forEach(cta => { %>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="cta-content">
+                    <div class="divider mb-4"></div>
+                    <h2 class="mb-5 text-lg"><span class="title-color"><%= cta.title %></span></h2>
+                    <a href="/appointment" class="btn btn-main-2 btn-round-full">Get appointment<i class="icofont-simple-right ml-2"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <img src="/<%= cta.image %>" alt="Banner" class="img-fluid">
+    <% }) %>
+</section>
+
+<!-- footer -->
+<%- include('./common/footer.ejs')%>
